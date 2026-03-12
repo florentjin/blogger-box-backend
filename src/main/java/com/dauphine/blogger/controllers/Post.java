@@ -1,18 +1,38 @@
 package com.dauphine.blogger.controllers;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+
 import java.util.UUID;
 
+@Entity
+@Table(name="post")
 public class Post {
+    @Id
+    @Column(name="id")
     private String uuid;
+    @Column(name="title")
     private String title;
-    private String author;
-    private String content;
-    public Post(String uuid, String title, String author, String content) {
-        this.uuid = uuid;
-        this.title = title;
-        this.author = author;
-        this.content = content;
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Column(name="created_date")
+    private String date;
+
+    @Column(name="content")
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private Category category;
+
+    public Post() {
     }
 
     public Post(UUID uuid, String sport) {
@@ -29,12 +49,6 @@ public class Post {
     }
     public void setTitle(String title) {
         this.title = title;
-    }
-    public String getAuthor() {
-        return author;
-    }
-    public void setAuthor(String author) {
-        this.author = author;
     }
     public String getContent() {
         return content;

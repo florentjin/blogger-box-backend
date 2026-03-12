@@ -10,41 +10,42 @@ import java.util.UUID;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private final List<Category> temporaryCategories;
+    private final CategoryRepository categoryRepository;
 
 
-    public CategoryServiceImpl() {
-        temporaryCategories = new ArrayList<>();
-        temporaryCategories.add(new Category(UUID.randomUUID(),"Sport"));
-        temporaryCategories.add(new Category(UUID.randomUUID(),"Culture"));
-        temporaryCategories.add(new Category(UUID.randomUUID(),"Politique"));
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+
     }
 
     @Override
     public List<Category> getAll() {
-        return temporaryCategories;
+        return categoryRepository.findAll();
     }
 
     @Override
     public Category getById(UUID id) {
-        return temporaryCategories.stream().filter(category -> category.getUuid().equals(id)).findFirst().orElse(null);
+        return categoryRepository.findById(id).orElse(null);
     }
 
     @Override
     public Category create(String name) {
-        return new Category(UUID.randomUUID(),name);
+        Category category = new Category(UUID.randomUUID(), name);
+        return categoryRepository.save(category);
     }
 
     @Override
     public Category updateName(String name,UUID id) {
-        Category category = temporaryCategories.stream().filter(category1 -> category1.getUuid().equals(id)).findFirst().orElse(null);
-        if( category != null)
-            category.setName(name);
-        return category;
+        Category category = getById(id);
+        if (category == null) {
+            return null;
+        }
+
+        category.setName(name);
+        return categoryRepository.save(category);
     }
 
     @Override
     public void deleteById(UUID id) {
-        temporaryCategories.removeIf(category -> category.getUuid().equals(id));
+        categoryRepository.deleteById(id);}
     }
-}

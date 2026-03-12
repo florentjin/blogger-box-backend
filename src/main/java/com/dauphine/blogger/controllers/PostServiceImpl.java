@@ -10,42 +10,46 @@ import java.util.UUID;
 @Service
 public class PostServiceImpl implements PostService {
 
-    private final List<Post> temporaryCategories;
+    private final PostRepository postRepository;
 
 
-    public PostServiceImpl() {
-        temporaryCategories = new ArrayList<>();
-        temporaryCategories.add(new Post(UUID.randomUUID(),"Sport"));
-        temporaryCategories.add(new Post(UUID.randomUUID(),"Culture"));
-        temporaryCategories.add(new Post(UUID.randomUUID(),"Politique"));
+    public PostServiceImpl(PostRepository postRepository) {
+        this.postRepository = postRepository;
     }
 
     @Override
     public List<Post> getAll() {
-        return temporaryCategories;
+        return this.postRepository.findAll();
     }
 
     @Override
     public Post getById(UUID id) {
-        return temporaryCategories.stream().filter(Post -> Post.getUuid().equals(id)).findFirst().orElse(null);
+        return this.postRepository.findById(id).orElse(null);
     }
 
     @Override
     public Post create(String name) {
-        return new Post(UUID.randomUUID(),name);
+        Post post = new Post();
+        post.setTitle(name);
+        this.postRepository.save(post);
+        return post;
     }
 
     @Override
     public Post updateName(String name,UUID id) {
-        Post Post = temporaryCategories.stream().filter(Post1 -> Post1.getUuid().equals(id)).findFirst().orElse(null);
-        if( Post != null)
-            Post.setTitle(name);
-        return Post;
+        Post post = this.getById(id);
+        if (post == null) {
+            return null;
+        }
+        post.setTitle(name);
+        this.postRepository.save(post);
+        return post;
     }
 
     @Override
     public void deleteById(UUID id) {
-        temporaryCategories.removeIf(Post -> Post.getUuid().equals(id));
+        postRepository.deleteById(id);
+        return;
     }
 }
 
