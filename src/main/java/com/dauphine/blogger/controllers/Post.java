@@ -14,15 +14,10 @@ public class Post {
     @Column(name="title")
     private String title;
 
-    public String getDate() {
-        return date;
-    }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     @Column(name="created_date")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private String date;
 
     @Column(name="content")
@@ -55,6 +50,13 @@ public class Post {
     }
     public void setContent(String content) {
         this.content = content;
+    }
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
 }
