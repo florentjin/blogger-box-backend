@@ -1,17 +1,17 @@
 package com.dauphine.blogger.controllers;
 
-import com.dauphine.blogger.controllers.Post;
-import com.dauphine.blogger.controllers.PostService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+
 @Service
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-
 
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
@@ -28,28 +28,27 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post create(String name) {
+    public Post create(String title) {
         Post post = new Post();
-        post.setTitle(name);
-        this.postRepository.save(post);
-        return post;
+        post.setUuid(UUID.randomUUID());
+        post.setTitle(title);
+        post.setDate(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("UTC")).format(Instant.now()));
+        // Note: Category and Content are null by default when created via this method
+        return this.postRepository.save(post);
     }
 
     @Override
-    public Post updateName(String name,UUID id) {
+    public Post updateName(String title, UUID id) {
         Post post = this.getById(id);
         if (post == null) {
             return null;
         }
-        post.setTitle(name);
-        this.postRepository.save(post);
-        return post;
+        post.setTitle(title);
+        return this.postRepository.save(post);
     }
 
     @Override
     public void deleteById(UUID id) {
         postRepository.deleteById(id);
-        return;
     }
 }
-

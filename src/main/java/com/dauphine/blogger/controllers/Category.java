@@ -8,21 +8,21 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name="categories")
-
-
+@Table(name = "categories")
 public class Category {
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     private UUID uuid;
-    @Column(name="name")
-    private String name;
-    public Category(UUID id, String nom) {
 
-    }
+    @Column(name = "name")
+    private String name;
 
     public Category() {
+    }
 
+    public Category(UUID uuid, String name) {
+        this.uuid = uuid;
+        this.name = name;
     }
 
     public UUID getUuid() {
