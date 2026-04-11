@@ -19,7 +19,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getAll() {
-        return this.postRepository.findAll();
+        return this.postRepository.findAllByOrderByDateDesc();
     }
 
     @Override
