@@ -19,7 +19,7 @@ public class Post {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private String date;
 
-    @Column(name="content")
+    @Column(name="description", columnDefinition="TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)

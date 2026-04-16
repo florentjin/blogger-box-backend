@@ -27,7 +27,7 @@ public class PostController {
 
     @PostMapping
     public Post createPost(@RequestBody PostRequest request) {
-        return service.create(request.getTitle());
+        return service.create(request.getTitle(), request.getContent(), request.getCategoryId());
     }
 
     @PutMapping("/{id}")
@@ -39,19 +39,37 @@ public class PostController {
     public void deletePost(@PathVariable UUID id) {
         service.deleteById(id);
     }
-}
 
-/**
- * DTO interne pour recevoir les requêtes de création/modification
- */
-class PostRequest {
-    private String title;
+    /**
+     * DTO interne pour recevoir les requêtes de création/modification
+     */
+    public static class PostRequest {
+        private String title;
+        private String content;
+        private String categoryId;
 
-    public String getTitle() {
-        return title;
-    }
+        public String getTitle() {
+            return title;
+        }
 
-    public void setTitle(String title) {
-        this.title = title;
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public String getCategoryId() {
+            return categoryId;
+        }
+
+        public void setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
+        }
     }
 }

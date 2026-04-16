@@ -12,9 +12,11 @@ import java.util.UUID;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final CategoryRepository categoryRepository;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, CategoryRepository categoryRepository) {
         this.postRepository = postRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -28,12 +30,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post create(String title) {
+    public Post create(String title, String content, String categoryId) {
         Post post = new Post();
         post.setUuid(UUID.randomUUID());
         post.setTitle(title);
+        post.setContent(content);
         post.setDate(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("UTC")).format(Instant.now()));
-        // Note: Category and Content are null by default when created via this method
+
+        if (categoryId != null && !categoryId.isEmpty()) {
+            Category category = categoryRepository.findById(UUID.fromString(categoryId)).orElse(null);
+            post.setCategory(category);
+        }
+
         return this.postRepository.save(post);
     }
 
@@ -52,3 +60,4 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteById(id);
     }
 }
+

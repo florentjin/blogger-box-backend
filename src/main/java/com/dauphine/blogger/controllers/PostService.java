@@ -6,7 +6,7 @@ import java.util.UUID;
 public interface PostService {
     List<Post> getAll();
     Post getById(UUID id);
-    Post create(String tile);
+    Post create(String title, String content, String categoryId);
     Post updateName(String name, UUID id);
     void deleteById(UUID id);
 }
