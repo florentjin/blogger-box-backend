@@ -40,9 +40,6 @@ public class PostController {
         service.deleteById(id);
     }
 
-    /**
-     * DTO interne pour recevoir les requêtes de création/modification
-     */
     public static class PostRequest {
         private String title;
         private String content;

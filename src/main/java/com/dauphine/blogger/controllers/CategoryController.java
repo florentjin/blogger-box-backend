@@ -41,9 +41,6 @@ public class CategoryController {
     }
 }
 
-/**
- * DTO interne pour requêtes Category
- */
 class CategoryRequest {
     private String name;
 
